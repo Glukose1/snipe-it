@@ -261,7 +261,7 @@ if ($env_bad !='') {
 
 if(!$skip_php_checks){
     echo "\n\e[95m--------------------------------------------------------\n";
-    echo "STEP 2: Checking PHP requirements: (Required PHP >=". $php_min_works. " - <".$php_max_wontwork.") \e[39m\n";
+    echo "STEP 2: Checking PHP requirements: (Required PHP >=". $php_min_works. " - <".$php_max_wontwork.") \e[95m\n";
     echo "--------------------------------------------------------\e[39m\n\n";
 
     if ((version_compare(phpversion(), $php_min_works, '>=')) && (version_compare(phpversion(), $php_max_wontwork, '<'))) {
