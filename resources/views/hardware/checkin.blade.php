@@ -195,8 +195,9 @@
                 />
                 </form>
 
-                @include('modals.checkin-confirm')
-
+                @if ($snipeSettings->checkin_confirm)
+                    @include('modals.checkin-confirm')
+                @endif
             </div>
         </div>
     </div>
@@ -204,9 +205,9 @@
 @stop
 @section('moar_scripts')
     @parent
-    <script>
+    <script nonce="{{ csrf_token() }}">
         (function () {
-            var confirmed = false;
+            let confirmed = false;
             function ready(fn){
                 if (document.readyState !== 'loading') {
                     fn();

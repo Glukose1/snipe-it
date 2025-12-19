@@ -7,10 +7,10 @@
                 <h2 class="modal-title">{{ trans('general.checkin_confirm.title') }}</h2>
             </div>
             <div class="modal-body">
-                {!! trans('general.checkin_confirm.content') !!}
+                {!! nl2br(Helper::parseEscapedMarkedown($setting->checkin_confirm_text)) !!}
                 <label class="form-control">
                     <input type="checkbox" id="checkin-confirm" name="checkin-confirm" aria-label="checkin-confirm" required/>
-                    {{ trans('general.checkin_confirm.checkbox') }}
+                    {!! nl2br(Helper::parseEscapedMarkedown($setting->checkin_confirm_checkbox_text)) !!}
                 </label>
             </div>
             <div class="modal-footer">

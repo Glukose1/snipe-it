@@ -650,14 +650,7 @@ return [
     'child_locations' => 'Child Locations',
     'append' => 'Append',
     'optional' => 'OPTIONAL',
-    'checkin_confirm' => [
-        'content' => <<<'HTML'
-        <h3>Log out Apple ID</h3>
-        <p>If this Asset is an Apple device make sure that no user account is logged in with an Apple ID otherwise it cannot be erased!</p>
-        HTML,
-        'title' => 'Checkin Confirmation',
-        'checkbox' => 'I confirm that there is no Apple ID logged in to any user account.'
-    ],
+    'checkin_confirm_title' => 'Checkin Confirmation',
 
 // Add form placeholders here
     'placeholders' => [
