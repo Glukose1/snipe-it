@@ -4,7 +4,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h2 class="modal-title">{{ trans('general.checkin_confirm.title') }}</h2>
+                <h2 class="modal-title">{{ trans('general.checkin_confirm_title') }}</h2>
             </div>
             <div class="modal-body">
                 {!! nl2br(Helper::parseEscapedMarkedown($setting->checkin_confirm_text)) !!}
