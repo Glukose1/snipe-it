@@ -50,9 +50,9 @@
             --main-footer-bg-color: light-dark(#ffffff,#3d4144);
             --main-footer-text-color: light-dark(#605e5e, #d2d6de);
             --main-footer-top-border-color: light-dark(#d2d6de,#605e5e);
-            --main-theme-color: {{ $snipeSettings->header_color ?? '#5fa4cc' }};
-            --nav-hover-text-color: {{ $nav_link_color ?? 'light-dark(hsl(from var(--main-theme-color) h s calc(l - 10)),hsl(from var(--main-theme-color) h s calc(l - 10)))' }};
-            --nav-primary-text-color: {{ $nav_link_color ?? 'light-dark(hsl(from var(--main-theme-color) h s calc(l - 10)),hsl(from var(--main-theme-color) h s calc(l - 10)))' }};
+            --main-theme-color: {{ $snipeSettings->header_color ?? '#3c8dbc' }};
+            --nav-hover-text-color: {{ $nav_link_color ?? 'hsl(from var(--main-theme-color) h s calc(l - 10))' }};
+            --nav-primary-text-color: {{ $nav_link_color ?? '#ffffff' }};
             --search-highlight: #e9d15b;
             --sidenav-hover-color-bg: #4c4b4b;
             --sidenav-text-hover-color: #fff;
@@ -62,8 +62,8 @@
             --table-border-row: 1px solid var(--table-border-row-color);
             --table-stripe-bg-alt: light-dark(rgba(211, 211, 211, 0.25), #323131);
             --table-stripe-bg: light-dark(#ffffff, #494747);
-            --text-danger: light-dark(#a94442,#dd4b39);
-            --text-help: light-dark(#605e5e,#a6a4a4);
+            --text-danger: light-dark(#a94442, #fa5b48);
+            --text-help: light-dark(#777676,#a6a4a4);
             --text-info: light-dark(#31708f,#2baae6);
             --text-success: light-dark(#039516,#4ced61);
             --text-warning: light-dark(#da9113,#f3a51f);
@@ -121,10 +121,16 @@
 
         .label2_fields,
         .l2fd-main,
-        .l2fd-listitem
+        .l2fd-listitem,
+        .fixed-table-loading,
+        .list-group-item
         {
             background-color: var(--box-bg) !important;
             color: var(--color-fg) !important;
+        }
+
+        .list-group-item {
+            border: var(--tab-bottom-border);
         }
 
         footer.main-footer {
@@ -148,7 +154,7 @@
 
 
         .footer-links a {
-            color: light-dark(hsl(from var(--link-color) h s calc(l + 10)),hsl(from var(--link-color) h s calc(l - 32))) !important;
+            color: var(--link-color) !important;
         }
 
         h2 small {
@@ -167,6 +173,10 @@
             /*color: var(--btn-theme-hover-text-color) !important;*/
             color: var(--nav-primary-text-color) !important;
             border: 1px solid hsl(from var(--btn-theme-base) h s calc(l - 15)) !important;
+        }
+
+        .btn-theme:focus {
+            color: var(--nav-primary-text-color) !important;
         }
 
 
@@ -191,6 +201,7 @@
         input[type="url"],
         input[type="email"],
         input[type="password"],
+        input[type="tel"],
         option:active,
         option[active],
         option[selected],
@@ -203,34 +214,49 @@
 
         }
 
-        .input-group-addon {
-            background-color: var(--input-group-bg) !important;
-            color: var(--input-group-fg) !important;
-        }
-
         .select2-container--default.select2-container--focus .select2-selection--multiple,
         .select2-container--default .select2-search--dropdown .select2-search__field {
             border-color: hsl(from var(--main-theme-color) h s calc(l - 5)) !important;
         }
 
-        .select2-results__option[aria-selected=true] /** this handles the selected option */
+        /**
+        Multiselect maybe?
+         */
+        .select2-results__option[aria-selected=true]
         {
-            background-color: hsl(from var(--main-theme-color) h s calc(l - 5)) !important;
-            color: var(--color-fg) !important;
+            background-color: var(--main-theme-color) !important;
+            color: var(--nav-primary-text-color) !important;
         }
 
+        .select2-results__option[aria-selected=false]
+        {
+            background-color: var(--table-stripe-bg) !important;
+            /*background-color: hsl(from var(--main-theme-color) h s calc(l - 15)) !important;*/
+            /*color: var(--nav-primary-text-color) !important;*/
+            color: var(--color-fg) !important;
+        }
 
         /**
-        Highlight the select2 on hover
+        Highlight the select2 on hover when NOT the selected option
          */
-        .select2-results__option--highlighted[aria-selected=false] {
-            background-color: hsl(from var(--main-theme-color) h s calc(l + 20)) !important;
-            color: var(--color-fg) !important;
+        .select2-results__option--highlighted[aria-selected=false]
+        {
+            background-color: hsl(from var(--main-theme-color) h s calc(l - 10)) !important;
+            color: var(--nav-primary-text-color) !important;
         }
 
-        .select2-results__option--highlighted[aria-selected=true] {
-            /*background-color: hsl(from var(--main-theme-color) h s calc(l + 20)) !important;*/
-            color: var(--color-fg) !important;
+        /**
+        Highlight the select2 on hover when the selected option
+         */
+        .select2-results__option--highlighted[aria-selected=true],
+        .select2-results__option--highlighted[aria-selected=true]:hover,
+        .select2-results__option--highlighted[aria-selected=true]:link,
+        .select2-results__option--highlighted[aria-selected=true]:focus,
+        .select2-results__option--highlighted[aria-selected=true]:visited
+        {
+            background-color: hsl(from var(--main-theme-color) h s calc(l - 15)) !important;
+            /*color: var(--color-fg) !important;*/
+            color: var(--nav-primary-text-color) !important;
         }
 
         .select2-selection__choice,
@@ -238,19 +264,24 @@
         {
             background-color: var(--main-theme-color) !important;
             border-color: hsl(from var(--main-theme-color) h s calc(l - 15)) !important;
+            color: var(--nav-primary-text-color) !important;
         }
 
         .select2-selection__choice__remove {
-            color: white !important;
+            color: var(--nav-primary-text-color) !important;
         }
-
-
 
         .select2-container--default .select2-selection--multiple .select2-selection__choice
         {
             background-color: hsl(from var(--main-theme-color) h s calc(l - 5)) !important;
-            color: var(--color-fg) !important;
+            color: var(--nav-primary-text-color) !important;
             overflow-y: auto;
+        }
+
+
+        .input-group-addon {
+            background-color: var(--input-group-bg) !important;
+            color: var(--input-group-fg) !important;
         }
 
 
@@ -263,6 +294,15 @@
         textarea:focus
         {
             border-color: hsl(from var(--main-theme-color) h s calc(l - 5)) !important;
+        }
+
+        *:disabled,
+        input[readonly],
+        textarea[readonly]
+        {
+            background-color: light-dark(rgb(234, 232, 232), rgb(117, 116, 117)) !important;
+            border: 1px solid light-dark(rgb(234, 232, 232), rgb(117, 116, 117)) !important;
+            cursor: not-allowed !important;
         }
 
 
@@ -284,8 +324,15 @@
             cursor: pointer;
         }
 
-        h1, h2, h3, h4, p {
-            color: var(--color-fg);
+        h1,
+        h2,
+        h3,
+        h4,
+        p,
+        .modal-title,
+        .modal-header h2
+        {
+            color: var(--color-fg) !important;
         }
 
         .btn-danger,
@@ -299,8 +346,9 @@
         .btn-primary:focus,
         .modal-danger,
         .modal-danger h2,
-        .modal-header h2,
-        .modal-warning h2
+        .modal-warning h2,
+        .modal-danger h4,
+        .modal-warning h4,
         .bg-maroon,
         .bg-maroon:hover,
         .bg-maroon:focus,
@@ -310,6 +358,7 @@
         {
             color: white !important;
         }
+
 
         .btn-selected,
         .btn-selected a,
@@ -352,6 +401,22 @@
             border-right-color: var(--box-bg) !important;
         }
 
+        .table-bordered > tbody > tr > td,
+        .table-bordered > tbody > tr > th,
+        .table-bordered > tfoot > tr > td,
+        .table-bordered > tfoot > tr > th,
+        .table-bordered > thead > tr > td,
+        .table-bordered > thead > tr > td,
+        .table-bordered > thead > tr > th,
+        .table-bordered > thead > tr > th,
+        .table-bordered,
+        .well
+        {
+            border: 1px solid var(--box-header-top-border-color) !important;
+            border-left-color: var(--box-header-top-border-color) !important;
+            border-right-color: var(--box-header-top-border-color) !important;
+        }
+
         .box {
             border-top: 3px solid;
         }
@@ -359,6 +424,8 @@
         .box.box-default {
             border-top:  var(--box-header-top-border);
         }
+
+
 
         .box-header.with-border {
             border-bottom: var(--box-header-bottom-border);
@@ -391,7 +458,9 @@
         .nav-tabs-custom > .nav-tabs > li:first-of-type,
         .nav-tabs-custom > .nav-tabs > li.active > a:link,
         .nav-tabs-custom > .nav-tabs > li.active > a:visited,
-        .nav-tabs-custom > .nav-tabs > li.active > a:hover
+        .nav-tabs-custom > .nav-tabs > li.active > a:hover,
+        .bootstrap-table.fullscreen,
+        .well
         {
 
             color: var(--color-fg);
@@ -474,9 +543,7 @@
         }
 
 
-        .small-box h3, .small-box p {
-            color: white;
-        }
+
 
         /**
         main header nav
@@ -492,7 +559,8 @@
         .dropdown-menu > li,
         .navbar,
         .navbar-nav,
-        .label-default
+        .label-default,
+        .label-default:hover
         {
             background-color: var(--main-theme-color);
             color: var(--nav-primary-text-color) !important;
@@ -514,7 +582,6 @@
             /*color: var(--nav-primary-text-color) !important;*/
 
         }
-
 
         .btn-tableButton.active.focus,
         .btn-tableButton.active:focus,
@@ -580,7 +647,6 @@
             background-color: hsl(from var(--main-theme-color) h s calc(l - 5)) !important;
             color: var(--nav-primary-text-color) !important;
         }
-
 
         .navbar-nav > .notifications-menu > .dropdown-menu > li.header,
         .navbar-nav > .messages-menu > .dropdown-menu > li.header,
@@ -660,7 +726,7 @@
         .table > tfoot > tr > th,
         .table > thead > tr > td,
         .table > tbody > tr > td,
-        .table > tfoot > tr > td,
+        .table > tfoot > tr > td
 
         {
             border-top-color: var(--box-header-bottom-border-color) !important;
@@ -668,15 +734,18 @@
         }
 
 
-
         .help-block {
-            color: var(--text-help);
+            color: var(--text-help) !important;
         }
 
         .alert-msg,
         .has-error
         {
             color: var(--text-danger) !important;
+        }
+
+        .has-error .form-control {
+            border-color: var(--text-danger);
         }
 
         .alert a {
@@ -693,23 +762,23 @@
         }
 
         .text-warning {
-            color: var(--text-warning);
+            color: var(--text-warning) !important;
         }
 
         .text-info {
-            color: var(--text-info);
+            color: var(--text-info) !important;
         }
 
         .text-primary {
-            color: var(--main-theme-color);
+            color: var(--main-theme-color) !important;
         }
 
         .text-danger {
-            color: var(--text-danger);
+            color: var(--text-danger) !important;
         }
 
         .text-success {
-            color: var(--text-success);
+            color: var(--text-success) !important;
         }
 
         .dropdown-menu > .divider {
@@ -728,6 +797,9 @@
         input[type="checkbox"]::before {
             box-shadow: inset 1em 1em hsl(from var(--main-theme-color) h s calc(l - 20)) !important;
         }
+
+
+
 
         .callout.callout-legend {
             background-color: var(--callout-bg-color);
@@ -774,7 +846,8 @@
         .datepicker.dropdown-menu td:hover,
         .datepicker.datepicker-inline td:hover,
         .datepicker table tr td span:hover,
-        .datepicker table tr td span.focused
+        .datepicker table tr td span.focused,
+        .logo:hover
         {
             background-color: var(--main-theme-color) !important;
             color: var(--nav-primary-text-color) !important;
@@ -823,6 +896,14 @@
 
         h4#progress-text {
             color: white !important;
+        }
+
+        .small-box h3, .small-box p {
+            color: white !important;
+        }
+
+        .box.box-theme {
+            border-top:  var(--main-theme-color) !important;
         }
 
     </style>
@@ -1226,7 +1307,7 @@
                             </li>
                         @endcan
                         @can('index', \App\Models\Asset::class)
-                            <li class="treeview{{ ((request()->is('statuslabels/*') || request()->is('hardware*')) ? ' active' : '') }}">
+                            <li class="treeview{{ ((request()->is('statuslabels/*') || request()->is(['hardware*', 'maintenances*'])) ? ' active' : '') }}">
                                 <a href="#">
                                     <x-icon type="assets" class="fa-fw" />
                                     <span>{{ trans('general.assets') }}</span>
@@ -1346,7 +1427,7 @@
                                     @endcan
 
                                     @can('create', \App\Models\Asset::class)
-                                        <li{!! (Request::query('Deleted') ? ' class="active"' : '') !!}>
+                                        <li{!! (request()->query('status') == 'Deleted' ? ' class="active"' : '') !!}>
                                             <a href="{{ url('hardware?status=Deleted') }}">
                                                 {{ trans('general.deleted') }}
                                             </a>
@@ -1473,7 +1554,7 @@
                         @endcan
 
                         @can('backend.interact')
-                            <li id="settings-sidenav-option" class="treeview {!! in_array(Request::route()->getName(),App\Helpers\Helper::SettingUrls()) ? ' active': '' !!}">
+                            <li id="settings-sidenav-option" class="treeview {!! (request()->is(App\Helpers\Helper::SettingUrls()) ? ' active' : '') !!}">
                                 <a href="#" id="settings">
                                     <x-icon type="settings" class="fa-fw" />
                                     <span>{{ trans('general.settings') }}</span>
@@ -1498,7 +1579,7 @@
                                     @endcan
 
                                     @can('view', \App\Models\AssetModel::class)
-                                        <li {{!! (request()->is('models') ? ' class="active"' : '') !!}}>
+                                        <li {{!! (request()->is('models*') ? ' class="active"' : '') !!}}>
                                             <a href="{{ route('models.index') }}">
                                                 {{ trans('general.asset_models') }}
                                             </a>
@@ -1506,7 +1587,7 @@
                                     @endcan
 
                                     @can('view', \App\Models\Category::class)
-                                        <li {{!! (request()->is('categories') ? ' class="active"' : '') !!}}>
+                                        <li {{!! (request()->is('categories*') ? ' class="active"' : '') !!}}>
                                             <a href="{{ route('categories.index') }}">
                                                 {{ trans('general.categories') }}
                                             </a>
@@ -1514,7 +1595,7 @@
                                     @endcan
 
                                     @can('view', \App\Models\Manufacturer::class)
-                                        <li {{!! (request()->is('manufacturers') ? ' class="active"' : '') !!}}>
+                                        <li {{!! (request()->is('manufacturers*') ? ' class="active"' : '') !!}}>
                                             <a href="{{ route('manufacturers.index') }}">
                                                 {{ trans('general.manufacturers') }}
                                             </a>
@@ -1522,7 +1603,7 @@
                                     @endcan
 
                                     @can('view', \App\Models\Supplier::class)
-                                        <li {{!! (request()->is('suppliers') ? ' class="active"' : '') !!}}>
+                                        <li {{!! (request()->is('suppliers*') ? ' class="active"' : '') !!}}>
                                             <a href="{{ route('suppliers.index') }}">
                                                 {{ trans('general.suppliers') }}
                                             </a>
@@ -1530,7 +1611,7 @@
                                     @endcan
 
                                     @can('view', \App\Models\Department::class)
-                                        <li {{!! (request()->is('departments') ? ' class="active"' : '') !!}}>
+                                        <li {{!! (request()->is('departments*') ? ' class="active"' : '') !!}}>
                                             <a href="{{ route('departments.index') }}">
                                                 {{ trans('general.departments') }}
                                             </a>
@@ -1538,7 +1619,7 @@
                                     @endcan
 
                                     @can('view', \App\Models\Location::class)
-                                        <li {{!! (request()->is('locations') ? ' class="active"' : '') !!}}>
+                                        <li {{!! (request()->is('locations*') ? ' class="active"' : '') !!}}>
                                             <a href="{{ route('locations.index') }}">
                                                 {{ trans('general.locations') }}
                                             </a>
@@ -1546,7 +1627,7 @@
                                     @endcan
 
                                     @can('view', \App\Models\Company::class)
-                                        <li {{!! (request()->is('companies') ? ' class="active"' : '') !!}}>
+                                        <li {{!! (request()->is('companies*') ? ' class="active"' : '') !!}}>
                                             <a href="{{ route('companies.index') }}">
                                                 {{ trans('general.companies') }}
                                             </a>
@@ -1554,7 +1635,7 @@
                                     @endcan
 
                                     @can('view', \App\Models\Depreciation::class)
-                                        <li  {{!! (request()->is('depreciations') ? ' class="active"' : '') !!}}>
+                                        <li  {{!! (request()->is('depreciations*') ? ' class="active"' : '') !!}}>
                                             <a href="{{ route('depreciations.index') }}">
                                                 {{ trans('general.depreciation') }}
                                             </a>
@@ -1743,16 +1824,16 @@
                          {!! trans('general.footer_credit') !!}
 
                         <a target="_blank" href="https://bsky.app/profile/snipeitapp.com" rel="noopener" data-tooltip="true" data-title="Join us on Bluesky">
-                            <i class="fa-brands fa-square-bluesky"></i>
+                            <i class="fa-brands fa-square-bluesky fa-fw"></i>
                         </a>
                         <a target="_blank" href="https://hachyderm.io/@grokability" rel="noopener" data-tooltip="true" data-title="Join us on Github">
-                            <i class="fa-brands fa-square-github"></i>
+                            <i class="fa-brands fa-square-github fa-fw"></i>
                         </a>
                         <a target="_blank" href="https://hachyderm.io/@grokability" rel="noopener" data-tooltip="true" data-title="Join us on Mastodon">
-                            <i class="fa-brands fa-mastodon"></i>
+                            <i class="fa-brands fa-mastodon fa-fw"></i>
                         </a>
                         <a target="_blank" href="https://discord.gg/yZFtShAcKk" rel="noopener" data-tooltip="true" data-title="Join us on Discord">
-                            <i class="fa-brands fa-discord"></i>
+                            <i class="fa-brands fa-discord fa-fw"></i>
                         </a>
 
                     </div>
@@ -1805,9 +1886,9 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h2 class="modal-title" id="dataConfirmModalLabel">
+                        <h4 class="modal-title" id="dataConfirmModalLabel">
                             <span class="modal-header-icon"></span>&nbsp;
-                        </h2>
+                        </h4>
                     </div>
                     <div class="modal-body"></div>
                     <div class="modal-footer">

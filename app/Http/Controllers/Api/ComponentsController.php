@@ -303,11 +303,11 @@ class ComponentsController extends Controller
         }
 
         // Make sure there is at least one available to checkout
-        if ($component->numRemaining() < $request->get('assigned_qty')) {
-            return response()->json(Helper::formatStandardApiResponse('error', null, trans('admin/components/message.checkout.unavailable', ['remaining' => $component->numRemaining(), 'requested' => $request->get('assigned_qty')])));
+        if ($component->numRemaining() < $request->input('assigned_qty')) {
+            return response()->json(Helper::formatStandardApiResponse('error', null, trans('admin/components/message.checkout.unavailable', ['remaining' => $component->numRemaining(), 'requested' => $request->input('assigned_qty')])));
         }
 
-        if ($component->numRemaining() >= $request->get('assigned_qty')) {
+        if ($component->numRemaining() >= $request->input('assigned_qty')) {
 
             $asset = Asset::find($request->input('assigned_to'));
             $component->assigned_to = $request->input('assigned_to');
@@ -315,18 +315,18 @@ class ComponentsController extends Controller
             $component->assets()->attach($component->id, [
                 'component_id' => $component->id,
                 'created_at' => Carbon::now(),
-                'assigned_qty' => $request->get('assigned_qty', 1),
+                'assigned_qty' => $request->input('assigned_qty', 1),
                 'created_by' => auth()->id(),
-                'asset_id' => $request->get('assigned_to'),
-                'note' => $request->get('note'),
+                'asset_id' => $request->input('assigned_to'),
+                'note' => $request->input('note'),
             ]);
 
-            $component->logCheckout($request->input('note'), $asset);
+            $component->logCheckout($request->input('note'), $asset, null, [], $request->get('assigned_qty', 1));
 
             return response()->json(Helper::formatStandardApiResponse('success', null,  trans('admin/components/message.checkout.success')));
         }
 
-        return response()->json(Helper::formatStandardApiResponse('error', null, trans('admin/components/message.checkout.unavailable', ['remaining' => $component->numRemaining(), 'requested' => $request->get('assigned_qty')])));
+        return response()->json(Helper::formatStandardApiResponse('error', null, trans('admin/components/message.checkout.unavailable', ['remaining' => $component->numRemaining(), 'requested' => $request->input('assigned_qty')])));
     }
 
     /**
